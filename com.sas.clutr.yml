@@ -1,0 +1,20 @@
+Categories:
+  - System
+License: MIT
+SourceCode: https://github.com/sanjay434343/Clutr
+IssueTracker: https://github.com/sanjay434343/Clutr/issues
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    sudo:
+      - bash scripts/prepare_foss.sh
+    output: build/app/outputs/apk/release/app-release-unsigned.apk
+    build:
+      - flutter build apk --release
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1

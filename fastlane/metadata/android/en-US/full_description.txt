@@ -1,0 +1,8 @@
+Clutr is a smart storage cleaner that helps you free up space on your device. It automatically scans your files, temporary media, and old cache to provide intelligent cleanup suggestions. 
+
+Features:
+- Smart Media Scanning
+- WhatsApp Media Cleaner
+- Automated Background Trash Emptying
+- Home Screen Widgets
+- Local Mode with no cloud tracking (FOSS Version)
