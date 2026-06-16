@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "412687600245",
+    "project_id": "clutr-da90a",
+    "storage_bucket": "clutr-da90a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412687600245:android:ca179456a931660b25c63c",
+        "android_client_info": {
+          "package_name": "com.sas.clutr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412687600245-hv7u8q1jcg6vr21ddeoec2jqiepmgkad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sas.clutr",
+            "certificate_hash": "08524966e6c30cae56a8e8156a2fe9d8798c78f0"
+          }
+        },
+        {
+          "client_id": "412687600245-e5ck8tpk6csnpg8p03cmoevjkoslu7cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsyyl3JPtwI477JvkOtSgoOJQbv7I86Zg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412687600245-e5ck8tpk6csnpg8p03cmoevjkoslu7cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

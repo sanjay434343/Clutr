@@ -3,6 +3,10 @@ Categories:
 License: MIT
 SourceCode: https://github.com/sanjay434343/Clutr
 IssueTracker: https://github.com/sanjay434343/Clutr/issues
+Repo: https://github.com/sanjay434343/Clutr
+Summary: A smart decluttering app
+Description: |-
+  Clutr is a smart decluttering app that helps you manage your files.
 
 Builds:
   - versionName: 1.0.0

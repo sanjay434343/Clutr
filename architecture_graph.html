@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutr 3D Architecture Graph</title>
+    
+    <!-- 3D Force Graph library -->
+    <script src="https://unpkg.com/3d-force-graph"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        #3d-graph {
+            width: 100vw;
+            height: 100vh;
+        }
+        .scene-tooltip {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: #000 !important;
+            border-radius: 4px;
+            padding: 8px !important;
+            font-weight: bold;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="3d-graph"></div>
+
+<script>
+    // Define the graph data
+    const gData = {
+        nodes: [
+            // Root
+            { id: 'main', name: 'main.dart (App Root)', group: 1, val: 35 },
+            
+            // Top Level
+            { id: 'core', name: 'Core', group: 2, val: 25 },
+            { id: 'features', name: 'Features', group: 3, val: 25 },
+            
+            // Core Subdirectories
+            { id: 'c_constants', name: 'Constants', group: 2, val: 12 },
+            { id: 'c_errors', name: 'Errors', group: 2, val: 12 },
+            { id: 'c_interfaces', name: 'Interfaces', group: 2, val: 12 },
+            { id: 'c_network', name: 'Network', group: 2, val: 12 },
+            { id: 'c_platform', name: 'Platform', group: 2, val: 12 },
+            { id: 'c_routes', name: 'Routes', group: 2, val: 12 },
+            { id: 'c_services', name: 'Services', group: 4, val: 18 },
+            { id: 'c_theme', name: 'Theme', group: 2, val: 12 },
+            { id: 'c_utils', name: 'Utils', group: 2, val: 12 },
+            
+            // Specific Services
+            { id: 's_auth', name: 'Auth Service', group: 4, val: 10 },
+            { id: 's_bg', name: 'Background Task', group: 4, val: 10 },
+            { id: 's_clean', name: 'Background Cleaning', group: 4, val: 10 },
+            { id: 's_notif', name: 'Notification Service', group: 4, val: 10 },
+            { id: 's_trash', name: 'Trash Service', group: 4, val: 10 },
+
+            // Features Subdirectories
+            { id: 'f_auth', name: 'Auth Feature', group: 3, val: 12 },
+            { id: 'f_cleanup', name: 'Cleanup Feature', group: 3, val: 12 },
+            { id: 'f_dashboard', name: 'Dashboard Feature', group: 3, val: 12 },
+            { id: 'f_navigation', name: 'Navigation Feature', group: 3, val: 12 },
+            { id: 'f_onboarding', name: 'Onboarding Feature', group: 3, val: 12 },
+            { id: 'f_settings', name: 'Settings Feature', group: 3, val: 12 },
+            { id: 'f_splash', name: 'Splash Feature', group: 3, val: 12 }
+        ],
+        links: [
+            { source: 'main', target: 'core' },
+            { source: 'main', target: 'features' },
+            
+            // Core links
+            { source: 'core', target: 'c_constants' },
+            { source: 'core', target: 'c_errors' },
+            { source: 'core', target: 'c_interfaces' },
+            { source: 'core', target: 'c_network' },
+            { source: 'core', target: 'c_platform' },
+            { source: 'core', target: 'c_routes' },
+            { source: 'core', target: 'c_services' },
+            { source: 'core', target: 'c_theme' },
+            { source: 'core', target: 'c_utils' },
+            
+            // Services links
+            { source: 'c_services', target: 's_auth' },
+            { source: 'c_services', target: 's_bg' },
+            { source: 'c_services', target: 's_clean' },
+            { source: 'c_services', target: 's_notif' },
+            { source: 'c_services', target: 's_trash' },
+
+            // Features links
+            { source: 'features', target: 'f_auth' },
+            { source: 'features', target: 'f_cleanup' },
+            { source: 'features', target: 'f_dashboard' },
+            { source: 'features', target: 'f_navigation' },
+            { source: 'features', target: 'f_onboarding' },
+            { source: 'features', target: 'f_settings' },
+            { source: 'features', target: 'f_splash' },
+            
+            // Cross-dependencies (represented with animated particles flowing through them)
+            { source: 'f_auth', target: 's_auth' },
+            { source: 'f_cleanup', target: 's_clean' },
+            { source: 'f_cleanup', target: 's_trash' }
+        ]
+    };
+
+    // Initialize 3D Force Graph
+    const Graph = ForceGraph3D()
+        (document.getElementById('3d-graph'))
+        .graphData(gData)
+        .nodeLabel('name')
+        .nodeAutoColorBy('group')
+        .nodeVal('val')
+        // Particles for animation along the links
+        .linkDirectionalParticles(2)
+        .linkDirectionalParticleWidth(1.5)
+        .linkDirectionalParticleSpeed(0.005)
+        .backgroundColor('#050510') // Very dark space-like background
+        .onNodeClick(node => {
+            // Zoom in on node when clicked
+            const distance = 80;
+            const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+
+            Graph.cameraPosition(
+                { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, 
+                node, // lookAt
+                2000  // transition duration ms
+            );
+        });
+
+    // Make nodes move continuously: perturb their velocities slightly so they "breathe" or float in space
+    setInterval(() => {
+        const nodes = Graph.graphData().nodes;
+        nodes.forEach(node => {
+            // Add a tiny random force to keep them moving
+            node.vx += (Math.random() - 0.5) * 0.5;
+            node.vy += (Math.random() - 0.5) * 0.5;
+            node.vz += (Math.random() - 0.5) * 0.5;
+        });
+    }, 100);
+
+    // Camera orbit animation for the 3D immersive feel
+    let angle = 0;
+    const distance = 300;
+    setInterval(() => {
+        Graph.cameraPosition({
+            x: distance * Math.sin(angle),
+            z: distance * Math.cos(angle)
+        });
+        angle += Math.PI / 1500; // Slow, majestic orbit
+    }, 16); // ~60fps rotation
+
+</script>
+</body>
+</html>
