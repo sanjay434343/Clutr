@@ -7,4 +7,5 @@ sed -i '/firebase_core:/d' pubspec.yaml
 sed -i '/firebase_auth:/d' pubspec.yaml
 sed -i '/cloud_firestore:/d' pubspec.yaml
 sed -i '/google_sign_in:/d' pubspec.yaml
+rm -f android/app/google-services.json
 echo "FOSS preparation complete. You can now build the F-Droid version."
